@@ -1,0 +1,53 @@
+---
+title: "Registration summary"
+format: html
+execute:
+  echo: false
+  warning: false
+---
+
+## Summary
+
+The following is a RAP(-ish) process to look at the organisations that are currently registered for HACA. It includes some fuzzy string matching because the organisation box was free text.
+
+```{r}
+
+df <- readxl::read_excel("data/Registration Update.xlsx", skip = 1) |> 
+  dplyr::filter(!is.na(ID))
+
+name_df <- readxl::read_excel("data/Registration Update.xlsx") |> 
+  dplyr::slice(1)
+
+names(df) <- c(names(df)[1:9], names(name_df)[10:15])
+
+names(df) <- gsub("Marketing - ", "", names(df))
+
+patterns <- c("NHS England", "NHS Trust", "University", "Trust",
+              "Strategy Unit", "ICB", "Council")
+
+df <- df |> 
+  dplyr::mutate(final_org = dplyr::case_when(
+    grepl(patterns[1], Organization, ignore.case = TRUE) ~ patterns[1],
+    grepl(patterns[2], Organization, ignore.case = TRUE) ~ patterns[2],
+    grepl(patterns[3], Organization, ignore.case = TRUE) ~ patterns[3],
+    grepl(patterns[4], Organization, ignore.case = TRUE) ~ patterns[4],
+    grepl(patterns[5], Organization, ignore.case = TRUE) ~ patterns[5],
+    grepl(patterns[6], Organization, ignore.case = TRUE) ~ patterns[6],
+    grepl(patterns[7], Organization, ignore.case = TRUE) ~ patterns[7],
+    TRUE ~ Organization
+  ))
+
+```
+
+## Organisation
+
+```{r}
+
+df |> 
+  dplyr::count(final_org) |>
+  dplyr::arrange(desc(n)) |> 
+  dplyr::rename(Organisation = final_org, Number = n) |> 
+  DT::datatable()
+
+```
+
