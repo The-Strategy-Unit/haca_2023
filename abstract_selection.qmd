@@ -1,0 +1,34 @@
+---
+title: "Abstract selection summary"
+format:
+  html:
+    embed-resources: true
+execute:
+  echo: false
+  warning: false
+---
+
+## Summary
+
+The following is a RAP(-ish) process to count how many long talks, short talks, and posters I've accepted as I go along editing the spreadsheet
+
+```{r}
+
+read_sheet <- function(sheet_name){
+  
+  readxl::read_excel("data/final_abstract_selection.xlsx", sheet = sheet_name)
+}
+
+long_talks <- read_sheet("Longer talk")
+
+short_talks <- read_sheet("Shorter talk")
+
+posters <- read_sheet("Shorter talk")
+
+```
+
+
+### Note on licence
+
+Crown Copyright, 2023, [MIT licence](https://opensource.org/license/mit/)
+
