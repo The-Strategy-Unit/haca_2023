@@ -23,9 +23,42 @@ long_talks <- read_sheet("Longer talk")
 
 short_talks <- read_sheet("Shorter talk")
 
-posters <- read_sheet("Shorter talk")
+posters <- read_sheet("Posters")
 
 ```
+## Longer talks
+
+```{r}
+
+long_talks |> 
+  dplyr::count(Decision) |> 
+  gt::gt()
+
+```
+
+## Shorter talks
+
+```{r}
+
+short_talks |> 
+  dplyr::count(Decision) |> 
+  gt::gt()
+
+```
+
+## Posters
+
+```{r}
+
+posters |> 
+  dplyr::count(Decision) |> 
+  gt::gt()
+
+```
+
+
+
+
 
 
 ### Note on licence
