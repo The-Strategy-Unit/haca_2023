@@ -21,11 +21,40 @@ read_sheet <- function(sheet_name){
 
 long_talks <- read_sheet("Longer talk")
 
-short_talks <- read_sheet("Shorter talk")
+short_talks <- read_sheet("Short talk")
 
-posters <- read_sheet("Posters")
+posters <- read_sheet("Poster")
+
+dfs <- list("Longer talk" = long_talks, "Short talk" = short_talks, "Poster" = posters)
 
 ```
+
+## Summary
+
+```{r}
+
+count_accept <- function(df_list, type){
+  
+  accept <- df_list[[type]] |> 
+    dplyr::count(Decision) |> 
+    dplyr::filter(Decision == "ACCEPT") |> 
+    dplyr::pull(n)
+  
+  changed <- sum(purrr::map_int(df_list, ~ sum(.x[["Decision"]] == type)))
+  
+  return(accept + changed)
+  
+}
+
+long_talk_count <- count_accept(dfs, 'Longer talk')
+short_talk_count <- count_accept(dfs, 'Short talk')
+
+print(glue::glue("There are {long_talk_count} long talks, ", 
+                 "{short_talk_count} short talks, and {count_accept(dfs, 'Poster')} posters. 
+               In total there are {long_talk_count + short_talk_count} talks"))
+
+```
+
 ## Longer talks
 
 ```{r}
