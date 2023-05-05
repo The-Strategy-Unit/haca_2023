@@ -40,6 +40,6 @@ vignettes/*.pdf
 
 # data and output
 
-data/*
+conference_prep/data/*
 *.html
 registration_summary_files/*
