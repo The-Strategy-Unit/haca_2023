@@ -1,0 +1,24 @@
+---
+title: "Making the programme"
+format: html
+---
+
+```{r}
+
+final_abstract_selection <- readxl::read_excel("data/Accepted abstracts from Lauren.xlsx")
+
+```
+
+```{r}
+
+final_abstract_selection |> 
+  dplyr::filter(`Presentation Type` %in% c("A longer talk - 30-45 mins", 
+                                           "A shorter talk - 15 mins",
+                                           "Short talk")) |> 
+  dplyr::count(`Presentation Type`, Subject) |> 
+  dplyr::arrange(Subject) |> 
+  DT::datatable()
+
+
+```
+
